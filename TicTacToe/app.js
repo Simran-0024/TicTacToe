@@ -1,9 +1,11 @@
 let choice= document.querySelectorAll(".box");
-let resetbtn= document.querySelectorAll(".reset-btn");
+let resetbtn= document.querySelector(".reset-btn");
 let newbtn=document.querySelector(".newbtn");
-let winner=document.querySelector(".winner");
+let msg=document.querySelector("#msg");
 let msgcontainer=document.querySelector(".msgcontainer");
+let draw=document.querySelector(".Draw");
 
+let count=0;
 let turnO =true; // player 1 or palyer 2 is decided from here
 const winPatterns =[
     [0 ,1, 2],
@@ -20,23 +22,62 @@ choice.forEach((box)=>{
         if (turnO){
             box.innerText="O";
             turnO=false;
+            count++;
         }
         else{
             box.innerText="X";
             turnO=true;
+            count++;
         }
         box.disabled=true;
 
         checkWinner();
+        
     })
 
 });
+
+
+
+const disableBoxes= () =>{
+    for (cho of choice){
+        cho.disabled=true;
+
+    }
+}
+
+const enableBoxes= () =>{
+    for (cho of choice){
+        cho.disabled=false;
+        cho.innerText="";
+    }
+   
+}
 const displaywinner=(winner)=>{
-    winner.innerText=`Congrats ,Our winner is ${winner}`;
+    msg.innerText=`Congrats ,Our winner is ${winner}`;
     msgcontainer.classList.remove("hide");
+    disableBoxes();
+    
+
 
 };
 
+const checkDraw=()=>{
+    if (count===9){
+        Draw();
+    }
+}
+
+
+const Draw=()=>{
+    msg.innerText="Oops! It's a Draw ..No one is the Winner";
+    msgcontainer.classList.remove("hide");
+    disableBoxes();
+
+
+ 
+
+};
 const checkWinner = ()=>{
     for (pattern of winPatterns){
         let pos1= choice[pattern[0]].innerText;
@@ -47,10 +88,26 @@ const checkWinner = ()=>{
             if (pos1===pos2 && pos2===pos3){
                 displaywinner(pos1);
 
-
-
+            }
+            else{
+                checkDraw();
             }
         }
+        
+        
 
     }
+    
 };
+
+const resetGame = ()=>{
+    turnO=true;
+    enableBoxes();
+    msgcontainer.classList.add("hide");
+    checkWinner();
+
+}
+
+newbtn.addEventListener("click",(resetGame));
+resetbtn.addEventListener("click",(resetGame));
+

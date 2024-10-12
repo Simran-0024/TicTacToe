@@ -58,3 +58,9 @@ body {
 .hide{
     display: none;
 }
+.Draw{
+    padding: 0.5rem;
+    color: #C2C1C2;
+    font-size: 16px;
+
+}
